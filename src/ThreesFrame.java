@@ -23,6 +23,10 @@ public class ThreesFrame extends javax.swing.JFrame {
     initGame();
     initGrid();
     initKeyBindings();  // ← maintenant la méthode existe
+    setLayout(new BorderLayout());
+add(infoLabel, BorderLayout.NORTH); // message en haut
+add(gridPanel, BorderLayout.CENTER); // grille au centre
+
     updateView();
 }
 
@@ -37,11 +41,12 @@ public class ThreesFrame extends javax.swing.JFrame {
 }
 
          
-         private void resetGame() {
-        model.reset();
-        infoLabel.setText("Nouvelle partie");
-        updateView();
-    }
+       private void resetGame() {
+    model.reset();
+    infoLabel.setText("Nouvelle partie");
+    updateView();
+}
+
         private void initGrid() {
     gridPanel.removeAll();
 
@@ -55,6 +60,10 @@ public class ThreesFrame extends javax.swing.JFrame {
             gridPanel.add(btn);
         }
     }
+    infoLabel = new JLabel("Nouvelle partie");
+infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+infoLabel.setFont(new Font("Arial", Font.BOLD, 16));
+getContentPane().add(infoLabel, BorderLayout.NORTH); // met le label en haut
 
     gridPanel.revalidate();
     gridPanel.repaint();
@@ -73,24 +82,28 @@ public class ThreesFrame extends javax.swing.JFrame {
         im.put(KeyStroke.getKeyStroke("RIGHT"), "right");
 
         am.put("up", new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 play(Direction.UP);
             }
         });
 
         am.put("down", new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 play(Direction.DOWN);
             }
         });
 
         am.put("left", new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 play(Direction.LEFT);
             }
         });
 
         am.put("right", new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 play(Direction.RIGHT);
             }
@@ -98,19 +111,28 @@ public class ThreesFrame extends javax.swing.JFrame {
     }
 
     // ===== JOUER =====
-    private void play(Direction dir) {
+   private void play(Direction dir) {
     if (model.isGameOver()) {
-        infoLabel.setText("GAME OVER");
+        infoLabel.setText("GAME OVER !");
         return;
     }
 
-    MoveResult res = model.move(dir);  // ← maintenant MoveResult existe
+    MoveResult res = model.move(dir);
     if (!res.moved) return;
 
     model.spawnOnBorder(dir);
     updateView();
+
+    // Vérifie si le jeu est terminé après le déplacement
+    if (model.isGameOver()) {
+        infoLabel.setText("GAME OVER !");
+    } else {
+        infoLabel.setText("Continuez à jouer");
+    }
 }
 
+
+    private JLabel infoLabel2;
 
     // ===== AFFICHAGE =====
     private void updateView() {
@@ -129,7 +151,10 @@ public class ThreesFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,11 +162,11 @@ public class ThreesFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 297, Short.MAX_VALUE)
+            .addGap(0, 260, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 211, Short.MAX_VALUE)
+            .addGap(0, 195, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,14 +176,14 @@ public class ThreesFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(62, 62, 62)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         pack();
@@ -197,6 +222,7 @@ public class ThreesFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
